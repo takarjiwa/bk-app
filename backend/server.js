@@ -3,41 +3,33 @@
 const express = require('express');
 const cors = require('cors');
 const { Pool } = require('pg');
+const serverless = require('serverless-http'); // <-- Import serverless-http
+
 require('dotenv').config();
 
 const app = express();
-const port = process.env.PORT || 3000;
+// NOTE: We don't need the port constant anymore
+// const port = process.env.PORT || 3000;
 
 // --- Database Connection ---
-// This now connects to your Supabase database using the connection string from .env
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
 
-// Test the connection to Supabase
-async function testConnection() {
-  try {
-    const result = await pool.query('SELECT NOW()');
-    console.log('✅ Supabase database connection successful!');
-    console.log('Current time from database:', result.rows[0].now);
-  } catch (err) {
-    console.error('❌ Supabase database connection failed:', err.message);
-    process.exit(1);
-  }
-}
-
-testConnection();
-
-// REMOVED: The setupDatabase() function is no longer needed.
-// You have already created the tables in the Supabase dashboard.
+// We can remove the testConnection() and setupDatabase() functions
+// as they are not ideal for a serverless environment that can start up frequently.
+// It's better to assume the DB is ready. You already set up the schema in Supabase.
 
 app.use(cors());
 app.use(express.json());
 
 // --- API Endpoints (No changes needed here) ---
 
+// This is a good practice for serverless: define a base router
+const router = express.Router();
+
 // Endpoint to create a new session
-app.post('/api/sessions', async (req, res) => {
+router.post('/sessions', async (req, res) => {
   try {
     const { userName, ethnicGroup, educationLevel } = req.body;
     const result = await pool.query(
@@ -52,10 +44,9 @@ app.post('/api/sessions', async (req, res) => {
 });
 
 // Endpoint to save an AI interaction
-app.post('/api/interactions', async (req, res) => {
+router.post('/interactions', async (req, res) => {
     try {
         const { sessionId, featureTitle, userInput, aiOutput } = req.body;
-        // NOTE: The table name in the query is 'interactions', which matches our SQL schema.
         await pool.query(
             'INSERT INTO interactions (session_id, feature_title, user_input, ai_output) VALUES ($1, $2, $3, $4)',
             [sessionId, featureTitle, userInput, aiOutput]
@@ -67,53 +58,39 @@ app.post('/api/interactions', async (req, res) => {
     }
 });
 
-// NEW: Endpoint to handle Gemini API calls securely
-app.post('/api/gemini', async (req, res) => {
+// Endpoint to handle Gemini API calls securely
+router.post('/gemini', async (req, res) => {
   try {
     const { prompt } = req.body;
-
     if (!prompt) {
       return res.status(400).json({ error: 'Prompt is required.' });
     }
 
-    // Securely get the API key from the .env file
     const apiKey = process.env.GEMINI_API_KEY;
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
 
-    const payload = {
-      contents: [{ role: 'user', parts: [{ text: prompt }] }],
-    };
-
-    // Call the real Gemini API from your server
+    // Use the native fetch included in recent Node.js versions
     const geminiResponse = await fetch(apiUrl, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: prompt }] }] }),
     });
 
     if (!geminiResponse.ok) {
-      // Log the detailed error on the server but don't send it to the client
       console.error('Gemini API Error:', await geminiResponse.text());
-      throw new Error(`Gemini API failed with status: ${geminiResponse.status}`);
+      throw new Error(`Gemini API failed`);
     }
-
     const data = await geminiResponse.json();
-
-    // Send the successful response back to the frontend
     return res.status(200).json(data);
-
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: 'An internal server error occurred.' });
+    return res.status(500).json({ error: 'Internal server error' });
   }
 });
 
-app.get('/', (req, res) => {
-  res.send('Server is up and running, connected to Supabase!');
-});
+// All API routes will be prefixed with '/api'
+app.use('/api', router);
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+// --- EXPORT THE HANDLER FOR NETLIFY ---
+// This is the crucial part that wraps the Express app
+module.exports.handler = serverless(app);
