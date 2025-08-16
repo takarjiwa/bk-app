@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panduan BK: Meraih Masa Depan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .chart-container {
+        position: relative;
+        width: 100%;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        height: 300px;
+        max-height: 400px;
+      }
+      @media (min-width: 768px) {
+        .chart-container {
+          height: 350px;
+        }
+      }
+      .nav-link {
+        transition: all 0.3s ease;
+        border-bottom: 2px solid transparent;
+      }
+      .nav-link.active {
+        border-bottom-color: #0d9488; /* teal-600 */
+        color: #0d9488;
+      }
+      .content-section {
+        display: none;
+      }
+      .content-section.active {
+        display: block;
+      }
+      .welcome-section {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+        text-align: center;
+        padding: 20px;
+      }
+      .hidden {
+        display: none;
+      }
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+      .modal-content {
+        background-color: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        max-width: 400px;
+        width: 90%;
+        position: relative;
+      }
+    </style>
+  </head>
+  <body class="bg-white text-stone-800">
+    <div class="container mx-auto px-4 py-8">
+      <header class="text-center mb-8">
+        <h1 class="text-3xl md:text-4xl font-bold text-teal-700">
+          Panduan Bimbingan Konseling
+        </h1>
+        <p class="mt-2 text-lg text-stone-600">
+          Membantumu Mengenal Diri, Mengembangkan Potensi, dan Meraih Masa Depan
+        </p>
+      </header>
+
+      <!-- Welcome Section -->
+      <section id="welcome-section" class="welcome-section">
+        <h2 class="text-3xl md:text-4xl font-bold text-teal-700 mb-4">
+          👋 Selamat Datang, Calon Bintang Masa Depan! ✨
+        </h2>
+        <p class="text-xl text-stone-600 mb-8 max-w-2xl">
+          Siap menjelajahi potensi diri, merancang impian, dan menjadi pribadi
+          tangguh? Aplikasi ini hadir untuk menemanimu dalam setiap langkah
+          menuju masa depan yang cerah dan penuh makna! Mari kita mulai
+          petualangan ini!
+        </p>
+        <div class="mb-4 w-full max-w-sm">
+          <label
+            for="ethnicGroupSelect"
+            class="block text-stone-700 text-sm font-bold mb-2 text-left"
+            >Pilih Suku Anda:</label
+          >
+          <select
+            id="ethnicGroupSelect"
+            class="block w-full p-3 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+          >
+            <option value="Umum">Lainnya (Umum)</option>
+            <option value="Minangkabau">Minangkabau</option>
+            <option value="Jawa">Jawa</option>
+            <option value="Sunda">Sunda</option>
+            <option value="Batak">Batak</option>
+            <option value="Betawi">Betawi</option>
+            <option value="Bugis">Bugis</option>
+            <option value="Madura">Madura</option>
+            <option value="Melayu">Melayu</option>
+            <option value="Palembang">Palembang</option>
+            <option value="Dayak">Dayak</option>
+          </select>
+        </div>
+        <div class="mb-4 w-full max-w-sm">
+          <label
+            for="educationLevelSelect"
+            class="block text-stone-700 text-sm font-bold mb-2 text-left"
+            >Pilih Tingkat Pendidikan Anda:</label
+          >
+          <select
+            id="educationLevelSelect"
+            class="block w-full p-3 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+          >
+            <option value="Umum">Lainnya (Umum)</option>
+            <option value="SD">Sekolah Dasar (SD)</option>
+            <option value="SMP">Sekolah Menengah Pertama (SMP)</option>
+            <option value="SMA/SMK">
+              Sekolah Menengah Atas/Kejuruan (SMA/SMK)
+            </option>
+            <option value="Mahasiswa">Mahasiswa</option>
+          </select>
+        </div>
+        <div class="mb-6 w-full max-w-sm">
+          <label
+            for="userNameInput"
+            class="block text-stone-700 text-sm font-bold mb-2 text-left"
+            >Masukkan Nama Anda:</label
+          >
+          <input
+            type="text"
+            id="userNameInput"
+            placeholder="Nama Anda..."
+            class="p-3 border border-stone-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-teal-500"
+          />
+        </div>
+        <button
+          id="enter-app-btn"
+          class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-8 rounded-lg focus:outline-none focus:shadow-outline transition duration-300 text-lg"
+        >
+          Yuk, Masuk ke Aplikasi! 🚀
+        </button>
+        <p id="welcome-error" class="text-red-500 mt-4 hidden"></p>
+        <p class="mt-12 text-sm text-stone-500">
+          Dipersembahkan oleh Takar Jiwa, platform layanan psikologis dan
+          kesehatan mental. Ikuti kami di IG:
+          <a
+            href="https://www.instagram.com/takarjiwa"
+            target="_blank"
+            class="text-teal-600 hover:underline"
+            >@takarjiwa</a
+          >
+          dan TikTok:
+          <a
+            href="https://www.tiktok.com/@takar.jiwa"
+            target="_blank"
+            class="text-teal-600 hover:underline"
+            >@takar.jiwa</a
+          >
+        </p>
+      </section>
+
+      <!-- Main Application Content -->
+      <div id="app-content" class="hidden">
+        <div class="flex justify-between items-center mb-4">
+          <p class="text-stone-600">
+            Selamat datang,
+            <span
+              id="user-display-name"
+              class="font-semibold text-teal-700"
+            ></span
+            >!
+          </p>
+          <div class="flex gap-2">
+            <button
+              id="back-to-welcome-btn"
+              class="bg-stone-300 hover:bg-stone-400 text-stone-800 font-bold py-2 px-4 rounded transition duration-300"
+            >
+              Selesai Sesi
+            </button>
+          </div>
+        </div>
+
+        <nav class="flex justify-center border-b border-stone-200 mb-8">
+          <ul
+            class="flex flex-wrap -mb-px text-sm font-medium text-center text-stone-500"
+          >
+            <li class="mr-2">
+              <a
+                href="#"
+                id="nav-1"
+                class="nav-link inline-block p-4 rounded-t-lg active"
+              >
+                <span class="text-xl mr-2">💡</span> Kenali Diri
+              </a>
+            </li>
+            <li class="mr-2">
+              <a
+                href="#"
+                id="nav-2"
+                class="nav-link inline-block p-4 rounded-t-lg"
+              >
+                <span class="text-xl mr-2">🚀</span> Rancang Masa Depan
+              </a>
+            </li>
+            <li class="mr-2">
+              <a
+                href="#"
+                id="nav-3"
+                class="nav-link inline-block p-4 rounded-t-lg"
+              >
+                <span class="text-xl mr-2">✨</span> Kembangkan Potensi
+              </a>
+            </li>
+            <li class="mr-2">
+              <a
+                href="#"
+                id="nav-4"
+                class="nav-link inline-block p-4 rounded-t-lg"
+              >
+                <span class="text-xl mr-2">🛡️</span> Jadi Pribadi Tangguh
+              </a>
+            </li>
+            <li id="nav-catatan-tak-bertuan-li">
+              <a
+                href="#"
+                id="nav-6"
+                class="nav-link inline-block p-4 rounded-t-lg"
+              >
+                <span class="text-xl mr-2">📝</span> Catatan Tak Bertuan
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <main>
+          <section id="content-1" class="content-section active">
+            <div class="text-center mb-8">
+              <h2 class="text-2xl font-bold text-teal-700">
+                Sesi 1: Aku dan Keluargaku, Memahami Diri Sendiri
+              </h2>
+              <p class="mt-2 max-w-3xl mx-auto text-stone-600">
+                Bagian ini akan membantumu memahami bahwa setiap keluarga itu
+                unik dan berharga. Kamu akan menemukan kekuatan luar biasa dalam
+                dirimu dan melihat bagaimana budaya bisa menjadi sumber
+                dukungan.
+              </p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+              <div
+                class="bg-white p-6 rounded-lg shadow-sm border border-stone-200"
+              >
+                <h3 class="font-bold text-lg text-teal-600 mb-2">
+                  Keluarga Itu Beragam
+                </h3>
+                <p class="text-stone-600">
+                  Tidak ada keluarga yang sempurna. Ada yang tinggal bersama
+                  orang tua, kakek-nenek, atau paman-bibi. Setiap bentuk
+                  keluarga punya kekuatan dan keunikannya sendiri. Yang
+                  terpenting adalah rasa saling mendukung.
+                </p>
+              </div>
+              <div
+                class="bg-white p-6 rounded-lg shadow-sm border border-stone-200"
+              >
+                <h3 class="font-bold text-lg text-teal-600 mb-2">
+                  Kekuatan Diriku
+                </h3>
+                <p class="text-stone-600">
+                  Tantangan hidup seringkali membuat kita lebih kuat. Mungkin
+                  kamu jadi lebih mandiri, tangguh, atau punya rasa peduli yang
+                  tinggi. Kenali dan banggalah pada kekuatan karakter yang kamu
+                  miliki.
+                </p>
+              </div>
+              <div
+                class="bg-white p-6 rounded-lg shadow-sm border border-stone-200"
+              >
+                <h3 class="font-bold text-lg text-teal-600 mb-2">
+                  Budaya Sebagai Penopang
+                </h3>
+                <p class="text-stone-600">
+                  Dalam budaya Minangkabau, 'Rumah Gadang' adalah simbol
+                  kebersamaan. Ini mengingatkan kita bahwa kita tidak pernah
+                  sendiri dan selalu punya tempat untuk kembali dan mendapat
+                  dukungan.
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="bg-white p-6 rounded-lg shadow-sm border border-stone-200 mt-8"
+            >
+              <h3 class="font-bold text-lg text-teal-600 mb-4">
+                ✨ Temukan Kekuatanmu
+              </h3>
+              <p class="text-stone-600 mb-4">
+                Ceritakan tantangan atau kesulitan yang kamu alami, dan Gemini
+                akan membantumu melihat sisi positif atau kekuatan yang
+                terbentuk darinya.
+              </p>
+              <div class="flex flex-col gap-4 mb-4">
+                <textarea
+                  id="challengeInput"
+                  rows="4"
+                  placeholder="Contoh: Saya sering merasa sendirian karena orang tua saya bekerja di luar kota..."
+                  class="p-3 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                ></textarea>
+                <button
+                  id="findStrengthBtn"
+                  class="bg-teal-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-teal-700 transition duration-300"
+                >
+                  Temukan Kekuatanku ✨
+                </button>
+              </div>
+              <div
+                id="strengthOutput"
+                class="p-4 bg-stone-100 rounded-lg border border-stone-200 min-h-[100px] text-stone-700 overflow-auto"
+              >
+                <p class="text-stone-500">
+                  Analisis kekuatan akan muncul di sini.
+                </p>
+              </div>
+              <div
+                id="strengthLoading"
+                class="hidden text-center text-teal-600 mt-2"
+              >
+                Menganalisis kekuatan...
+              </div>
+            </div>
+          </section>
+
+          <section id="content-2" class="content-section">
+            <div class="text-center mb-8">
+              <h2 class="text-2xl font-bold text-teal-700">
+                Sesi 2: Mimpiku Tidak Terbatas, Merancang Masa Depan
+              </h2>
+              <p class="mt-2 max-w-3xl mx-auto text-stone-600">
+                Jangan biarkan pikiran "tidak mungkin" membatasi mimpimu. Di
+                sini, kita akan membuka wawasan tentang berbagai profesi dan
+                jalan untuk meraihnya, bahkan dengan keterbatasan.
+              </p>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-8 items-center mb-8">
+              <div>
+                <h3 class="font-bold text-xl text-center text-teal-600 mb-4">
+                  Jelajahi Dunia Profesi
+                </h3>
+                <div class="grid grid-cols-2 gap-4 text-center">
+                  <div
+                    class="bg-white p-4 rounded-lg shadow-sm border border-stone-200"
+                  >
+                    🎨 Desainer Grafis
+                  </div>
+                  <div
+                    class="bg-white p-4 rounded-lg shadow-sm border border-stone-200"
+                  >
+                    💻 Content Creator
+                  </div>
+                  <div
+                    class="bg-white p-4 rounded-lg shadow-sm border border-stone-200"
+                  >
+                    🔧 Teknisi Handal
+                  </div>
+                  <div
+                    class="bg-white p-4 rounded-lg shadow-sm border border-stone-200"
+                  >
+                    🧑‍🍳 Pengusaha Kuliner
+                  </div>
+                  <div
+                    class="bg-white p-4 rounded-lg shadow-sm border border-stone-200"
+                  >
+                    🤝 Pekerja Sosial
+                  </div>
+                  <div
+                    class="bg-white p-4 rounded-lg shadow-sm border border-stone-200"
+                  >
+                    🌱 Ahli Pertanian
+                  </div>
+                </div>
+                <p class="text-center mt-4 text-sm text-stone-500">
+                  Dan masih banyak lagi profesi keren lainnya!
+                </p>
+              </div>
+              <div>
+                <h3 class="font-bold text-xl text-center text-teal-600 mb-4">
+                  Banyak Jalan Menuju Sukses
+                </h3>
+                <div class="chart-container">
+                  <canvas id="careerPathChart"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="bg-white p-6 rounded-lg shadow-sm border border-stone-200 mt-8"
+            >
+              <h3 class="font-bold text-lg text-teal-600 mb-4">
+                ✨ Ide Profesi Baru
+              </h3>
+              <p class="text-stone-600 mb-4">
+                Masukkan minat atau hobi yang kamu suka, dan Gemini akan
+                memberikan ide profesi menarik untukmu!
+              </p>
+              <div class="flex flex-col md:flex-row gap-4 mb-4">
+                <input
+                  type="text"
+                  id="interestInput"
+                  placeholder="Contoh: suka menggambar, suka hewan"
+                  class="flex-grow p-3 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                />
+                <button
+                  id="generateProfessionBtn"
+                  class="bg-teal-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-teal-700 transition duration-300"
+                >
+                  Cari Ide Profesi ✨
+                </button>
+              </div>
+              <div
+                id="professionOutput"
+                class="p-4 bg-stone-100 rounded-lg border border-stone-200 min-h-[100px] text-stone-700 overflow-auto"
+              >
+                <p class="text-stone-500">
+                  Hasil ide profesi akan muncul di sini.
+                </p>
+              </div>
+              <div
+                id="professionLoading"
+                class="hidden text-center text-teal-600 mt-2"
+              >
+                Memuat ide profesi...
+              </div>
+            </div>
+
+            <div
+              class="bg-white p-6 rounded-lg shadow-sm border border-stone-200 mt-8"
+            >
+              <h3 class="font-bold text-lg text-teal-600 mb-4">
+                ✨ Jalur Pendidikan Impian
+              </h3>
+              <p class="text-stone-600 mb-4">
+                Masukkan profesi atau minat yang kamu inginkan, dan Gemini akan
+                menyarankan jalur pendidikan yang sesuai, termasuk opsi biaya
+                rendah atau beasiswa.
+              </p>
+              <div class="flex flex-col gap-4 mb-4">
+                <textarea
+                  id="educationPathInput"
+                  rows="4"
+                  placeholder="Contoh: Saya ingin jadi dokter, saya suka komputer..."
+                  class="p-3 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                ></textarea>
+                <button
+                  id="generateEducationPathBtn"
+                  class="bg-teal-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-teal-700 transition duration-300"
+                >
+                  Cari Jalur Pendidikan ✨
+                </button>
+              </div>
+              <div
+                id="educationPathOutput"
+                class="p-4 bg-stone-100 rounded-lg border border-stone-200 min-h-[100px] text-stone-700 overflow-auto"
+              >
+                <p class="text-stone-500">
+                  Saran jalur pendidikan akan muncul di sini.
+                </p>
+              </div>
+              <div
+                id="educationPathLoading"
+                class="hidden text-center text-teal-600 mt-2"
+              >
+                Memuat saran jalur pendidikan...
+              </div>
+            </div>
+
+            <!-- New Feature: Action Plan Assistant -->
+            <div
+              class="bg-white p-6 rounded-lg shadow-sm border border-stone-200 mt-8"
+            >
+              <h3 class="font-bold text-lg text-teal-600 mb-4">
+                ✨ Asisten Pembuat Rencana Aksi
+              </h3>
+              <p class="text-stone-600 mb-4">
+                Masukkan tujuan yang ingin kamu capai, dan Gemini akan
+                membantumu membuat rencana aksi dengan langkah-langkah konkret!
+              </p>
+              <div class="flex flex-col gap-4 mb-4">
+                <textarea
+                  id="goalInput"
+                  rows="4"
+                  placeholder="Contoh: Saya ingin meningkatkan nilai matematika, saya ingin belajar coding dasar..."
+                  class="p-3 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                ></textarea>
+                <button
+                  id="generateActionPlanBtn"
+                  class="bg-teal-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-teal-700 transition duration-300"
+                >
+                  Buat Rencana Aksi ✨
+                </button>
+              </div>
+              <div
+                id="actionPlanOutput"
+                class="p-4 bg-stone-100 rounded-lg border border-stone-200 min-h-[100px] text-stone-700 overflow-auto"
+              >
+                <p class="text-stone-500">Rencana aksi akan muncul di sini.</p>
+              </div>
+              <div
+                id="actionPlanLoading"
+                class="hidden text-center text-teal-600 mt-2"
+              >
+                Membuat rencana aksi...
+              </div>
+            </div>
+          </section>
+
+          <section id="content-3" class="content-section">
+            <div class="text-center mb-8">
+              <h2 class="text-2xl font-bold text-teal-700">
+                Sesi 3: Kembangkan Potensimu, Siap Mengukir Prestasi
+              </h2>
+              <p class="mt-2 max-w-3xl mx-auto text-stone-600">
+                Setiap orang punya bakat tersembunyi. Mari kita temukan bakatmu,
+                asah, dan tunjukkan pada dunia. Prestasi bukan hanya tentang
+                menang, tapi tentang proses bertumbuh.
+              </p>
+            </div>
+            <div
+              class="bg-white p-6 rounded-lg shadow-sm border border-stone-200 mb-8"
+            >
+              <h3 class="font-bold text-lg text-teal-600 mb-3">
+                Bagaimana Cara Mengembangkan Potensi?
+              </h3>
+              <ul class="space-y-3 text-stone-600">
+                <li class="flex items-start">
+                  <span class="text-teal-500 mr-3">✅</span>
+                  <strong>Identifikasi Minat:</strong> Apa yang kamu suka
+                  lakukan? Apa yang membuatmu lupa waktu? Itulah awal dari
+                  bakatmu.
+                </li>
+                <li class="flex items-start">
+                  <span class="text-teal-500 mr-3">✅</span>
+                  <strong>Ikut Lomba & Kompetisi:</strong> Jangan takut mencoba!
+                  Lomba adalah ajang belajar, menambah pengalaman, dan membangun
+                  kepercayaan diri.
+                </li>
+                <li class="flex items-start">
+                  <span class="text-teal-500 mr-3">✅</span>
+                  <strong>Bergabung dengan Komunitas:</strong> Cari teman dengan
+                  minat yang sama. Kalian bisa saling belajar dan memberi
+                  semangat.
+                </li>
+                <li class="flex items-start">
+                  <span class="text-teal-500 mr-3">✅</span>
+                  <strong>Terus Berlatih:</strong> Bakat perlu diasah. Latihan
+                  yang konsisten akan membuatmu semakin mahir dan percaya diri.
+                </li>
+              </ul>
+            </div>
+            <div
+              class="bg-white p-6 rounded-lg shadow-sm border border-stone-200 mt-8"
+            >
+              <h3 class="font-bold text-lg text-teal-600 mb-4">
+                ✨ Rencanakan Pengembangan Potensi
+              </h3>
+              <p class="text-stone-600 mb-4">
+                Masukkan bakat atau minat yang ingin kamu kembangkan, dan Gemini
+                akan memberikan saran langkah-langkah praktis atau sumber daya
+                yang bisa kamu gunakan.
+              </p>
+              <div class="flex flex-col gap-4 mb-4">
+                <textarea
+                  id="talentInput"
+                  rows="4"
+                  placeholder="Contoh: Saya suka menulis cerita, saya ingin belajar bermain gitar..."
+                  class="p-3 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                ></textarea>
+                <button
+                  id="planTalentBtn"
+                  class="bg-teal-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-teal-700 transition duration-300"
+                >
+                  Rencanakan Potensiku ✨
+                </button>
+              </div>
+              <div
+                id="talentOutput"
+                class="p-4 bg-stone-100 rounded-lg border border-stone-200 min-h-[100px] text-stone-700 overflow-auto"
+              >
+                <p class="text-stone-500">
+                  Saran pengembangan potensi akan muncul di sini.
+                </p>
+              </div>
+              <div
+                id="talentLoading"
+                class="hidden text-center text-teal-600 mt-2"
+              >
+                Memuat saran pengembangan...
+              </div>
+            </div>
+          </section>
+
+          <section id="content-4" class="content-section">
+            <div class="text-center mb-8">
+              <h2 class="text-2xl font-bold text-teal-700">
+                Sesi 4: Jadi Pribadi Tangguh & Anti-Perundungan
+              </h2>
+              <p class="mt-2 max-w-3xl mx-auto text-stone-600">
+                Menjadi pribadi yang baik berarti bisa mengelola emosi,
+                berkomunikasi dengan sehat, dan berani membela kebenaran. Mari
+                ciptakan lingkungan belajar yang aman dan nyaman untuk semua.
+              </p>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-8 items-center mb-8">
+              <div>
+                <h3 class="font-bold text-xl text-center text-teal-600 mb-4">
+                  Keterampilan Hidup Penting
+                </h3>
+                <div class="space-y-4">
+                  <div
+                    class="bg-white p-4 rounded-lg shadow-sm border border-stone-200"
+                  >
+                    <h4 class="font-bold text-teal-600">Komunikasi Efektif</h4>
+                    <p class="text-sm text-stone-600">
+                      Belajar mendengar dan menyampaikan pendapat dengan sopan.
+                    </p>
+                  </div>
+                  <div
+                    class="bg-white p-4 rounded-lg shadow-sm border border-stone-200"
+                  >
+                    <h4 class="font-bold text-teal-600">Resolusi Konflik</h4>
+                    <p class="text-sm text-stone-600">
+                      Menyelesaikan masalah tanpa kekerasan atau saling
+                      menyakiti.
+                    </p>
+                  </div>
+                  <div
+                    class="bg-white p-4 rounded-lg shadow-sm border border-stone-200"
+                  >
+                    <h4 class="font-bold text-teal-600">Mengelola Emosi</h4>
+                    <p class="text-sm text-stone-600">
+                      Mengenali perasaan marah atau sedih dan menyalurkannya
+                      dengan cara positif.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <h3 class="font-bold text-xl text-center text-teal-600 mb-4">
+                  Dampak Negatif Perundungan
+                </h3>
+                <div class="chart-container">
+                  <canvas id="bullyingImpactChart"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="bg-white p-6 rounded-lg shadow-sm border border-stone-200 mt-8"
+            >
+              <h3 class="font-bold text-lg text-teal-600 mb-4">
+                ✨ Simulasi Respon Bullying
+              </h3>
+              <p class="text-stone-600 mb-4">
+                Ceritakan skenario perundungan yang kamu alami atau saksikan,
+                dan Gemini akan memberimu saran bagaimana meresponsnya.
+              </p>
+              <div class="flex flex-col gap-4 mb-4">
+                <textarea
+                  id="bullyingScenarioInput"
+                  rows="4"
+                  placeholder="Contoh: Temanku diejek karena pakai kacamata lama..."
+                  class="p-3 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                ></textarea>
+                <button
+                  id="generateBullyingResponseBtn"
+                  class="bg-teal-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-teal-700 transition duration-300"
+                >
+                  Dapatkan Saran Respon ✨
+                </button>
+              </div>
+              <div
+                id="bullyingResponseOutput"
+                class="p-4 bg-stone-100 rounded-lg border border-stone-200 min-h-[100px] text-stone-700 overflow-auto"
+              >
+                <p class="text-stone-500">Saran respon akan muncul di sini.</p>
+              </div>
+              <div
+                id="bullyingLoading"
+                class="hidden text-center text-teal-600 mt-2"
+              >
+                Memuat saran respon...
+              </div>
+            </div>
+
+            <div
+              class="bg-white p-6 rounded-lg shadow-sm border border-stone-200 mt-8"
+            >
+              <h3 class="font-bold text-lg text-teal-600 mb-4">
+                ✨ Latih Ungkap Perasaan
+              </h3>
+              <p class="text-stone-600 mb-4">
+                Ceritakan situasi dan perasaan yang kamu alami (misalnya: sedih,
+                marah, frustrasi), dan Gemini akan membantumu merumuskan cara
+                mengungkapkannya secara konstruktif.
+              </p>
+              <div class="flex flex-col gap-4 mb-4">
+                <textarea
+                  id="expressFeelingsInput"
+                  rows="4"
+                  placeholder="Contoh: Saya merasa sedih karena nilai saya turun..."
+                  class="p-3 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                ></textarea>
+                <button
+                  id="generateFeelingsExpressionBtn"
+                  class="bg-teal-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-teal-700 transition duration-300"
+                >
+                  Ungkapkan Perasaan ✨
+                </button>
+              </div>
+              <div
+                id="feelingsExpressionOutput"
+                class="p-4 bg-stone-100 rounded-lg border border-stone-200 min-h-[100px] text-stone-700 overflow-auto"
+              >
+                <p class="text-stone-500">
+                  Saran pengungkapan perasaan akan muncul di sini.
+                </p>
+              </div>
+              <div
+                id="feelingsExpressionLoading"
+                class="hidden text-center text-teal-600 mt-2"
+              >
+                Menganalisis cara mengungkapkan perasaan...
+              </div>
+            </div>
+
+            <!-- New Feature: Stress Coping Strategies -->
+            <div
+              class="bg-white p-6 rounded-lg shadow-sm border border-stone-200 mt-8"
+            >
+              <h3 class="font-bold text-lg text-teal-600 mb-4">
+                ✨ Strategi Mengatasi Stres
+              </h3>
+              <p class="text-stone-600 mb-4">
+                Ceritakan apa yang membuatmu stres, dan Gemini akan memberikan
+                strategi praktis untuk mengatasinya.
+              </p>
+              <div class="flex flex-col gap-4 mb-4">
+                <textarea
+                  id="stressInput"
+                  rows="4"
+                  placeholder="Contoh: Saya stres karena banyak tugas dan ujian..."
+                  class="p-3 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                ></textarea>
+                <button
+                  id="generateCopingStrategyBtn"
+                  class="bg-teal-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-teal-700 transition duration-300"
+                >
+                  Dapatkan Strategi Stres ✨
+                </button>
+              </div>
+              <div
+                id="copingStrategyOutput"
+                class="p-4 bg-stone-100 rounded-lg border border-stone-200 min-h-[100px] text-stone-700 overflow-auto"
+              >
+                <p class="text-stone-500">
+                  Strategi mengatasi stres akan muncul di sini.
+                </p>
+              </div>
+              <div
+                id="copingStrategyLoading"
+                class="hidden text-center text-teal-600 mt-2"
+              >
+                Menganalisis strategi stres...
+              </div>
+            </div>
+          </section>
+
+          <section id="content-6" class="content-section">
+            <div class="text-center mb-8">
+              <h2 class="text-2xl font-bold text-teal-700">
+                Catatan Tak Bertuan
+              </h2>
+              <p class="mt-2 max-w-3xl mx-auto text-stone-600">
+                Ini adalah tempat siswa bisa berbagi cerita secara anonim.
+                Silakan isi formulir di bawah ini untuk menuliskan ceritamu.
+                Ceritamu akan anonim, tapi konselormu bisa membacanya untuk
+                membantumu.
+              </p>
+            </div>
+
+            <div
+              class="bg-white p-6 rounded-lg shadow-sm border border-stone-200 mb-8"
+            >
+              <h3 class="font-bold text-lg text-teal-600 mb-4">
+                Kirim Cerita Anonimmu di Sini
+              </h3>
+              <iframe
+                src="https://forms.gle/QzttS1upvQ5eBxNdA"
+                width="100%"
+                height="600"
+                frameborder="0"
+                marginheight="0"
+                marginwidth="0"
+                class="rounded-lg"
+                >Memuat…</iframe
+              >
+              <p class="text-center text-sm text-stone-500 mt-4">
+                Ceritamu akan langsung terkirim ke konselor.
+              </p>
+            </div>
+          </section>
+
+          <!-- Summary Section (content-7) -->
+          <section id="content-7" class="content-section">
+            <div class="text-center mb-8">
+              <h2 class="text-2xl font-bold text-teal-700">
+                Ringkasan Sesi Bimbingan Anda
+              </h2>
+              <p class="mt-2 max-w-3xl mx-auto text-stone-600">
+                Berikut adalah rangkuman dari semua interaksi Anda dengan AI
+                selama sesi ini. Anda dapat meninjau hasilnya sebelum mengunduh
+                atau mencetaknya.
+              </p>
+            </div>
+            <div
+              id="sessionSummaryDisplay"
+              class="bg-white p-6 rounded-lg shadow-sm border border-stone-200 min-h-[200px] text-stone-700 overflow-auto mb-8"
+            >
+              <p class="text-stone-500">
+                Ringkasan sesi akan muncul di sini setelah Anda berinteraksi
+                dengan fitur AI.
+              </p>
+            </div>
+            <div
+              id="summaryLoading"
+              class="hidden text-center text-teal-600 mt-2"
+            >
+              <svg
+                class="animate-spin h-5 w-5 text-teal-600 inline-block mr-2"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  class="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  stroke-width="4"
+                ></circle>
+                <path
+                  class="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+              Menyusun ringkasan sesi...
+            </div>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+              <button
+                id="summary-download-btn"
+                class="bg-teal-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-teal-700 transition duration-300"
+              >
+                Unduh Ringkasan (Teks) 📄
+              </button>
+              <button
+                id="summary-print-btn"
+                class="bg-blue-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-600 transition duration-300"
+              >
+                Cetak sebagai PDF 🖨️
+              </button>
+              <button
+                id="proceed-to-support-btn"
+                class="bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition duration-300"
+              >
+                Selesai dan Beri Dukungan ✨
+              </button>
+            </div>
+          </section>
+
+          <!-- End-of-Session Thank You Page (content-8) -->
+          <section id="content-8" class="content-section text-center p-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-teal-700 mb-4">
+              Terima Kasih Telah Bertumbuh Bersama Kami! 🙏
+            </h2>
+            <p class="text-xl text-stone-600 mb-8 max-w-2xl mx-auto">
+              Semoga sesi bimbingan ini membawa manfaat dan menjadi langkah awal
+              yang kuat menuju masa depanmu. Ingat, kamu punya potensi luar
+              biasa!
+            </p>
+            <div
+              class="bg-white p-8 rounded-lg shadow-md border border-stone-200 inline-block"
+            >
+              <h3 class="font-bold text-2xl text-teal-700 mb-4">
+                Dukung Takar Jiwa! ❤️
+              </h3>
+              <p class="text-stone-600 mb-6">
+                Jika Anda merasa terbantu, Anda bisa mendukung kami agar bisa
+                terus memberikan layanan gratis untuk lebih banyak orang.
+              </p>
+              <img
+                src="assets/qris.jpeg"
+                alt="QRIS Takar Jiwa"
+                class="w-full max-w-sm mx-auto rounded-lg shadow-lg mb-6"
+              />
+              <p class="text-stone-500 text-sm">
+                Pindai QRIS di atas untuk berdonasi.
+              </p>
+            </div>
+            <div class="mt-8">
+              <button
+                id="restart-app-btn"
+                class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-8 rounded-lg focus:outline-none focus:shadow-outline transition duration-300 text-lg"
+              >
+                Mulai Sesi Baru 🚀
+              </button>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

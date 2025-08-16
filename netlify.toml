@@ -1,0 +1,13 @@
+# File: netlify.toml
+
+[build]
+  # This is the folder that contains your frontend (index.html, etc.)
+  publish = "/"
+  # This tells Netlify where your serverless function code is.
+  functions = "backend/"
+
+[[redirects]]
+  # This rule forwards all API requests to your backend function.
+  from = "/api/*"
+  to = "/.netlify/functions/server/:splat"
+  status = 200
